@@ -54,6 +54,7 @@ def _convert_loads_to_protobuf(
     scheduler_load = sglang_scheduler_pb2.SchedulerLoad(
         dp_rank=result.dp_rank,
         num_running_reqs=result.num_running_reqs,
+        avg_active_seq_len=result.avg_active_seq_len,
         num_waiting_reqs=result.num_waiting_reqs,
         num_total_reqs=result.num_running_reqs + result.num_waiting_reqs,
         num_used_tokens=result.num_used_tokens,
@@ -138,6 +139,9 @@ def _compute_aggregate_protobuf(
         avg_token_usage=round(sum(load.token_usage for load in loads) / n, 4),
         avg_throughput=round(sum(load.gen_throughput for load in loads) / n, 2),
         avg_utilization=round(sum(load.utilization for load in loads) / n, 4),
+        avg_active_seq_len=round(
+            sum(load.avg_active_seq_len for load in loads) / n, 2
+        ),
     )
 
 

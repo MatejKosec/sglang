@@ -1923,6 +1923,9 @@ class GetLoadsReqOutput(BaseReq):
     num_running_reqs: int = field(
         metadata={"metric": ("gauge", "Number of running requests")}
     )
+    avg_active_seq_len: float = field(
+        metadata={"metric": ("gauge", "Average sequence length of running requests")}
+    )
     num_waiting_reqs: int = field(
         metadata={"metric": ("gauge", "Number of waiting requests")}
     )

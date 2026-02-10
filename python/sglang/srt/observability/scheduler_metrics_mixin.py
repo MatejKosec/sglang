@@ -650,7 +650,13 @@ class SchedulerMetricsMixin:
         include = set(req.include) if req.include else {"core"}
         include_all = "all" in include
 
-        num_running_reqs = len(self.running_batch.reqs)
+        running_reqs = self.running_batch.reqs
+        num_running_reqs = len(running_reqs)
+        avg_active_seq_len = (
+            sum(req.seqlen for req in running_reqs) / num_running_reqs
+            if num_running_reqs > 0
+            else 0.0
+        )
 
         waiting_queues = [self.waiting_queue]
         if self.disaggregation_mode == DisaggregationMode.PREFILL:
@@ -757,6 +763,7 @@ class SchedulerMetricsMixin:
             dp_rank=self.dp_rank,
             timestamp=time.time(),
             num_running_reqs=num_running_reqs,
+            avg_active_seq_len=avg_active_seq_len,
             num_waiting_reqs=num_waiting_reqs,
             num_used_tokens=num_used_tokens,
             max_total_num_tokens=self.max_total_num_tokens,

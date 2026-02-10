@@ -68,6 +68,7 @@ def _compute_aggregate(load_dicts: list) -> dict:
             "avg_token_usage": 0.0,
             "avg_throughput": 0.0,
             "avg_utilization": 0.0,
+            "avg_active_seq_len": 0.0,
         }
 
     n = len(load_dicts)
@@ -80,6 +81,9 @@ def _compute_aggregate(load_dicts: list) -> dict:
         "avg_token_usage": round(sum(d["token_usage"] for d in load_dicts) / n, 4),
         "avg_throughput": round(sum(d["gen_throughput"] for d in load_dicts) / n, 2),
         "avg_utilization": round(sum(d["utilization"] for d in load_dicts) / n, 4),
+        "avg_active_seq_len": round(
+            sum(d["avg_active_seq_len"] for d in load_dicts) / n, 2
+        ),
     }
 
 
